@@ -21,15 +21,22 @@ let rec nth list nb =
     | Empty		-> raise(Failure "nth")
     | Item(a, b)	-> if nb = 0 then a else nth b (nb - 1)
 
-let append a b =
-  rev_append (rev a) b
-
 let rec rev_append a b = match a with
   | Empty		-> b
   | Item(hd, tl)	-> rev_append tl (Item(hd, b))
 
 let rec rev a =
   rev_append a Empty
+
+let append a b =
+  rev_append (rev a) b
+
+let rec flatten = function
+  | Empty		-> Empty
+  | Item(hd, tl)	-> append hd (flatten tl)
+
+let concat list =
+  flatten list
 
 let rec iter func list = match list with
   | []		-> ()
