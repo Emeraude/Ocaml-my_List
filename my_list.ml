@@ -38,9 +38,19 @@ let rec flatten = function
 let concat list =
   flatten list
 
-let rec iter func list = match list with
-  | []		-> ()
-  | hd::tl	-> begin
+let rec iter func = function
+  | Empty		-> ()
+  | Item(hd, tl)	-> begin
     func hd;
     iter func tl;
   end
+
+let rec iteri i func = function
+  | Empty		-> ()
+  | Item(hd, tl)	-> begin
+    func i hd;
+    iteri (i + 1) func tl;
+  end
+
+let iteri func list =
+  iteri 0 func list
