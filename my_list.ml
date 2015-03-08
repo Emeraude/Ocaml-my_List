@@ -156,3 +156,13 @@ let rec exists2 func la lb = match (la, lb) with
   | (Empty, Empty)			-> false
   | (Item(hda, tla), Item(hdb, tlb))	-> func hda hdb || exists2 func tla tlb
   | (_, _)                              -> raise(Invalid_argument "List.exists2")
+
+(* tail-rec *)
+let rec mem i = function
+  | Empty		-> false
+  | Item(hd, tl)	-> hd = i || mem i tl
+
+(* tail-rec *)
+let rec memq i = function
+  | Empty		-> false
+  | Item(hd, tl)	-> hd == i || mem i tl
