@@ -7,12 +7,12 @@ let rec length = function
   | Empty	-> 0
   | Item(a, b)	-> (length b) + 1
 
-(* not-tail *)
+(* not-rec *)
 let hd = function
   | Empty	-> raise(Failure "hd")
   | Item(a, b)	-> a
 
-(* not-tail *)
+(* not-rec *)
 let tl = function
   | Empty	-> raise(Failure "tl")
   | Item(a, b)	-> b
@@ -166,3 +166,25 @@ let rec mem i = function
 let rec memq i = function
   | Empty		-> false
   | Item(hd, tl)	-> hd == i || mem i tl
+
+(* tail-rec *)
+let rec find func = function
+  | Empty		-> raise(Not_found)
+  | Item(hd, tl)	-> if func hd then hd else find func tl
+
+(* tail-rec *)
+let filter func list =
+  let rec __filter a = function
+    | Empty		-> rev a
+    | Item(hd, tl)	-> if func hd then __filter (Item(hd, a)) tl else __filter a tl
+  in __filter Empty list
+
+(* tail-rec *)
+let find_all func list = filter func list
+
+(* tail-rec *)
+(* let partition func list = *)
+(*   let rec __partition a b = function *)
+(*     | Empty		-> Item((rev a), (rev b)) *)
+(*     | Item(hd, tl) -> if func hd then __partition (Item(hd, a)) b tl else __partition a (Item(hd, b)) tl *)
+(*   in __partition Empty Empty list *)
