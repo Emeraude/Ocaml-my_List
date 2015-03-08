@@ -4,18 +4,18 @@ type 'a my_list =
 
 (* tail-rec *)
 let rec length = function
-  | Empty	-> 0
-  | Item(a, b)	-> (length b) + 1
+  | Empty		-> 0
+  | Item(hd, tl)	-> (length tl) + 1
 
 (* not-rec *)
 let hd = function
-  | Empty	-> raise(Failure "hd")
-  | Item(a, b)	-> a
+  | Empty		-> raise(Failure "hd")
+  | Item(hd, tl)	-> hd
 
 (* not-rec *)
 let tl = function
-  | Empty	-> raise(Failure "tl")
-  | Item(a, b)	-> b
+  | Empty		-> raise(Failure "tl")
+  | Item(hd, tl)	-> tl
 
 (* tail-rec *)
 let rec nth list nb =
@@ -23,7 +23,7 @@ let rec nth list nb =
   then raise(Invalid_argument "List.nth")
   else match list with
     | Empty		-> raise(Failure "nth")
-    | Item(a, b)	-> if nb = 0 then a else nth b (nb - 1)
+    | Item(hd, tl)	-> if nb = 0 then hd else nth tl (nb - 1)
 
 (* tail-rec *)
 let rec rev_append a b = match a with
