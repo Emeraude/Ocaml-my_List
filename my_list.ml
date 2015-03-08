@@ -188,3 +188,33 @@ let find_all func list = filter func list
 (*     | Empty		-> Item((rev a), (rev b)) *)
 (*     | Item(hd, tl) -> if func hd then __partition (Item(hd, a)) b tl else __partition a (Item(hd, b)) tl *)
 (*   in __partition Empty Empty list *)
+
+(* tail-rec *)
+let rec assoc key = function
+  | Empty		-> raise(Not_found)
+  | Item((k, v), tl)	-> if k = key then v else assoc key tl
+
+(* tail-rec *)
+let rec assq key = function
+  | Empty		-> raise(Not_found)
+  | Item((k, v), tl)	-> if k == key then v else assq key tl
+
+(* tail-rec *)
+let rec mem_assoc key = function
+  | Empty		-> false
+  | Item((k, v), tl)	-> if k = key then true else mem_assoc key tl
+
+(* tail-rec *)
+let rec mem_assq key = function
+  | Empty		-> false
+  | Item((k, v), tl)	-> if k == key then true else mem_assq key tl
+
+(* not-tail-rec *)
+let rec remove_assoc key = function
+  | Empty			-> Empty
+  | Item((k, v as pair), tl)	-> if k = key then tl else (Item(pair, (remove_assoc key tl)))
+
+(* not-tail-rec *)
+let rec remove_assq key = function
+  | Empty			-> Empty
+  | Item((k, v as pair), tl)	-> if k == key then tl else (Item(pair, (remove_assq key tl)))
