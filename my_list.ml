@@ -211,10 +211,22 @@ let rec mem_assq key = function
 
 (* not-tail-rec *)
 let rec remove_assoc key = function
-  | Empty			-> Empty
-  | Item((k, v as pair), tl)	-> if k = key then tl else (Item(pair, (remove_assoc key tl)))
+  | Empty		-> Empty
+  | Item((k, v), tl)	-> if k = key then tl else (Item((k, v), (remove_assoc key tl)))
 
 (* not-tail-rec *)
 let rec remove_assq key = function
-  | Empty			-> Empty
-  | Item((k, v as pair), tl)	-> if k == key then tl else (Item(pair, (remove_assq key tl)))
+  | Empty		-> Empty
+  | Item((k, v), tl)	-> if k == key then tl else (Item((k, v), (remove_assq key tl)))
+
+(* not-tail-rec *)
+let rec split = function
+  | Empty		-> (Empty, Empty)
+  | Item((k, v), tl)	-> let (x, y) = split tl
+			   in (Item(k, x), Item(v, y))
+
+(* not-tail-rec *)
+let rec combine la lb = match (la, lb) with
+  | (Empty, Empty)			-> Empty
+  | (Item(hda, tla), Item(hdb, tlb))	-> Item((hda, hdb), combine tla tlb)
+  | (_, _)				-> raise(Invalid_argument "List.combine")
