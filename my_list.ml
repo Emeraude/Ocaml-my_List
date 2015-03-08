@@ -111,3 +111,26 @@ let rev_map2 func la lb =
     | (Item(hda, tla), Item(hdb, tlb))	-> __rev_map2 (Item(func hda hdb, ret)) tla tlb
     | (_, _)				-> raise(Invalid_argument "List.map2")
   in __rev_map2 Empty la lb
+
+
+(* tail-rec *)
+let rec fold_left func a = function
+  | Empty		-> a
+  | Item(hd, tl)	-> fold_left func (func a hd) tl
+
+(* not-tail-rec *)
+let rec fold_right func list a = match list with
+  | Empty		-> a
+  | Item(hd, tl)	-> func hd (fold_right func tl a)
+
+(* tail-rec *)
+let rec fold_left2 func a la lb = match (la, lb) with
+  | (Empty, Empty)			-> a
+  | (Item(hda, tla), Item(hdb, tlb))	-> fold_left2 func (func a hda hdb) tla tlb
+  | (_, _)				-> raise(Invalid_argument "List.fold_left2")
+
+(* not-tail-rec *)
+let rec fold_right2 func la lb a = match (la, lb) with
+  | (Empty, Empty)			-> a
+  | (Item(hda, tla), Item(hdb, tlb))	-> func hda hdb (fold_right2 func tla tlb a)
+  | (_, _)				-> raise(Invalid_argument "List.fold_right2")
