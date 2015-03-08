@@ -134,3 +134,25 @@ let rec fold_right2 func la lb a = match (la, lb) with
   | (Empty, Empty)			-> a
   | (Item(hda, tla), Item(hdb, tlb))	-> func hda hdb (fold_right2 func tla tlb a)
   | (_, _)				-> raise(Invalid_argument "List.fold_right2")
+
+(* tail-rec *)
+let rec for_all func = function
+  | Empty		-> true
+  | Item(hd, tl)	-> func hd && for_all func tl
+
+(* tail-rec *)
+let rec exists func = function
+  | Empty		-> false
+  | Item(hd, tl)	-> func hd || exists func tl
+
+(* tail-rec *)
+let rec for_all2 func la lb = match (la, lb) with
+  | (Empty, Empty)			-> true
+  | (Item(hda, tla), Item(hdb, tlb))	-> func hda hdb && for_all2 func tla tlb
+  | (_, _)                              -> raise(Invalid_argument "List.for_all2")
+
+(* tail-rec *)
+let rec exists2 func la lb = match (la, lb) with
+  | (Empty, Empty)			-> false
+  | (Item(hda, tla), Item(hdb, tlb))	-> func hda hdb || exists2 func tla tlb
+  | (_, _)                              -> raise(Invalid_argument "List.exists2")
